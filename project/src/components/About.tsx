@@ -19,7 +19,7 @@ const values = [
     icon: Truck,
     title: 'Fast Delivery',
     description:
-      'Order today and we bring it straight to your door. Quick, reliable delivery across Nkwo Orji and surrounding areas.',
+      'Order today and we bring it straight to your door.',
     color: 'bg-sky-100 text-sky-600',
   },
   {
@@ -43,7 +43,7 @@ export default function About() {
             Why Choose <span className="text-brand-600">Zigwills?</span>
           </h2>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
-            We are a local table water company committed to providing safe, affordable, and refreshing water to every household and business in our community.
+            We are a table water company committed to providing safe, affordable, and refreshing water to every household and business in our community.
           </p>
         </div>
 

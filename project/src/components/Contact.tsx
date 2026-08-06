@@ -44,7 +44,7 @@ export default function Contact() {
             We're Here to <span className="text-brand-300">Serve You</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Have questions or need a bulk order? Reach out — we respond quickly.
+            Have questions or need a bulk order? Reach out, we respond quickly.
           </p>
         </div>
 
