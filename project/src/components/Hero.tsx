@@ -21,11 +21,6 @@ export default function Hero() {
       <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-16 flex flex-col md:flex-row items-center gap-12 w-full">
         {/* Text */}
         <div className="flex-1 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 text-white text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in-up">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse-soft" />
-            Now Delivering to Your Doorstep
-          </div>
-
           <h1 className="font-display font-black text-white text-5xl md:text-6xl lg:text-7xl leading-tight mb-4 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             Pure.<br />
             <span className="text-brand-200">Safe.</span><br />
@@ -38,14 +33,8 @@ export default function Hero() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <a
-              href="#order"
-              className="bg-white text-brand-700 font-bold px-8 py-4 rounded-full text-base shadow-xl hover:shadow-2xl hover:bg-brand-50 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              Place an Order
-            </a>
-            <a
               href="#products"
-              className="border-2 border-white/50 text-white font-semibold px-8 py-4 rounded-full text-base hover:bg-white/10 transition-all duration-300"
+              className="bg-white text-brand-700 font-bold px-8 py-4 rounded-full text-base shadow-xl hover:shadow-2xl hover:bg-brand-50 transition-all duration-300 hover:-translate-y-0.5"
             >
               See Products
             </a>
@@ -66,16 +55,12 @@ export default function Hero() {
         {/* Logo */}
         <div className="flex-1 flex justify-center items-center">
           <div className="relative animate-float" style={{ animationDuration: '5s' }}>
-            {/* Soft glow behind the card */}
-            <div className="absolute inset-0 rounded-3xl bg-white/20 blur-2xl scale-110" />
-            {/* White card so logo background blends naturally */}
-            <div className="relative bg-white rounded-3xl shadow-2xl shadow-brand-900/30 p-8 md:p-10">
-              <img
-                src="/images/zigwills-logo.png"
-                alt="Zigwills Table Water logo"
-                className="w-56 md:w-72 max-w-full object-contain"
-              />
-            </div>
+            <div className="absolute inset-0 rounded-full bg-white/20 blur-3xl scale-125" />
+            <img
+              src="/images/zigwills-logo.png"
+              alt="Zigwills Table Water logo"
+              className="relative w-56 md:w-72 max-w-full object-contain drop-shadow-water"
+            />
           </div>
         </div>
       </div>

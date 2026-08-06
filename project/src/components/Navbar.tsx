@@ -27,15 +27,13 @@ export default function Navbar() {
     >
       <div className="max-w-6xl mx-auto px-6 flex items-center justify-between h-16">
         <a href="#home" className="flex items-center">
-          <div className={`rounded-xl overflow-hidden transition-all duration-300 ${
-            scrolled ? 'bg-white shadow-sm' : 'bg-white/95'
-          }`}>
-            <img
-              src="/images/zigwills-logo.png"
-              alt="Zigwills Table Water"
-              className="h-10 w-auto object-contain"
-            />
-          </div>
+          <img
+            src="/images/zigwills-logo.png"
+            alt="Zigwills Table Water"
+            className={`h-10 w-auto object-contain transition-all duration-300 ${
+              scrolled ? '' : 'drop-shadow-[0_2px_8px_rgba(255,255,255,0.4)]'
+            }`}
+          />
         </a>
 
         <nav className="hidden md:flex items-center gap-8">

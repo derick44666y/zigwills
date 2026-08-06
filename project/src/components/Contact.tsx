@@ -87,10 +87,10 @@ export default function Contact() {
             </div>
           </div>
           <a
-            href="#order"
+            href="tel:09011236098"
             className="bg-white text-brand-700 font-bold px-8 py-4 rounded-full whitespace-nowrap hover:bg-brand-50 transition-all hover:shadow-xl flex-shrink-0"
           >
-            Order Now
+            Call to Order
           </a>
         </div>
       </div>

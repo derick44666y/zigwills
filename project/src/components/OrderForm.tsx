@@ -136,7 +136,7 @@ export default function OrderForm() {
             Place Your Order
           </span>
           <h2 className="font-display font-bold text-slate-900 text-4xl md:text-5xl mb-4 leading-tight">
-            Order <span className="text-brand-600">Clean Water</span> Today
+            Order <span className="text-brand-600">Zigwills Water</span> Today
           </h2>
           <p className="text-slate-500 text-lg">
             Fill in your details and we will deliver straight to your doorstep.
@@ -268,38 +268,31 @@ export default function OrderForm() {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={status === 'submitting'}
-              className="w-full bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-xl transition-all hover:shadow-xl hover:shadow-blue-200/50 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {status === 'submitting' ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Placing Order...
-                </>
-              ) : (
-                'Place Order'
-              )}
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="w-full bg-gradient-to-r from-brand-500 to-brand-700 text-white font-bold py-4 rounded-xl transition-all hover:shadow-xl hover:shadow-blue-200/50 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {status === 'submitting' ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Placing Order...
+                  </>
+                ) : (
+                  'Place Order'
+                )}
+              </button>
 
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="bg-white px-4 text-sm text-slate-400">or</span>
-              </div>
+              <button
+                type="button"
+                onClick={handleWhatsAppOrder}
+                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl transition-all hover:shadow-xl hover:shadow-emerald-200/50 flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                WhatsApp
+              </button>
             </div>
-
-            <button
-              type="button"
-              onClick={handleWhatsAppOrder}
-              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl transition-all hover:shadow-xl hover:shadow-emerald-200/50 flex items-center justify-center gap-2"
-            >
-              <MessageCircle className="w-5 h-5" />
-              Order via WhatsApp
-            </button>
           </div>
         </form>
       </div>
