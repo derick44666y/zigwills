@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin panel from being indexed
+Disallow: /admin
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://zigwills.vercel.app/sitemap.xml
