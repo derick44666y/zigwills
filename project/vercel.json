@@ -1,14 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/index.ts"
-    },
-    {
-      "source": "/orders",
-      "destination": "/api/index.ts"
-    },
-    {
       "source": "/googled5d9608a15a99b85.html",
       "destination": "/googled5d9608a15a99b85.html"
     },
@@ -17,7 +9,7 @@
       "destination": "/index.html"
     },
     {
-      "source": "/((?!api/|googled).*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
