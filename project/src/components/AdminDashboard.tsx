@@ -27,7 +27,11 @@ import {
   Edit3,
   UploadCloud,
   Camera,
-  Loader2
+  Loader2,
+  Eye,
+  EyeOff,
+  KeyRound,
+  ShieldAlert
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -246,6 +250,13 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [lockoutCountdown, setLockoutCountdown] = useState(0);
 
+  // Show/Hide password toggle & Reset Password states
+  const [showPassword, setShowPassword] = useState(false);
+  const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
+  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [confirmAdminPassword, setConfirmAdminPassword] = useState('');
+  const [passwordChangeSuccess, setPasswordChangeSuccess] = useState('');
+
   // Inactivity Auto-Logout Timer (10 Minutes)
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -311,7 +322,9 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
       return;
     }
 
-    if (password !== 'zigwills2026') {
+    const validPwd = localStorage.getItem('zigwills_admin_custom_pwd') || 'zigwills2026';
+
+    if (password !== validPwd) {
       const newAttempts = failedAttempts + 1;
       setFailedAttempts(newAttempts);
 
@@ -348,6 +361,38 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
     setIsAuthenticated(true);
     setPassword('');
     setFailedAttempts(0);
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordChangeSuccess('');
+    setAuthError('');
+
+    if (newAdminPassword.length < 6) {
+      setAuthError('New password must be at least 6 characters long.');
+      return;
+    }
+
+    if (newAdminPassword !== confirmAdminPassword) {
+      setAuthError('New passwords do not match.');
+      return;
+    }
+
+    localStorage.setItem('zigwills_admin_custom_pwd', newAdminPassword);
+    setPasswordChangeSuccess('Admin password updated successfully!');
+    setNewAdminPassword('');
+    setConfirmAdminPassword('');
+
+    try {
+      await fetch(`${getApiUrl()}/api/admin/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ newPassword: newAdminPassword }),
+      });
+    } catch {}
   };
 
   const handleLogout = (reason?: string) => {
@@ -855,14 +900,33 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
               </div>
             )}
 
+            {passwordChangeSuccess && (
+              <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs p-3 rounded-xl flex items-center gap-2 text-left">
+                <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-emerald-400" />
+                <span>{passwordChangeSuccess}</span>
+              </div>
+            )}
+
             <form onSubmit={handleLogin} className="space-y-3">
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password (zigwills2026)"
-                className="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all text-xs text-white placeholder:text-slate-500"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter Admin Password"
+                  className="w-full pl-4 pr-11 py-3 rounded-xl bg-slate-950 border border-slate-800 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition-all text-[16px] text-white placeholder:text-slate-500 font-sans"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1 transition-colors"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+
               <button
                 type="submit"
                 className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-brand-500/25 transition-all text-xs flex items-center justify-center gap-1.5"
@@ -871,15 +935,83 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
               </button>
             </form>
 
-            <div className="mt-6 pt-4 border-t border-slate-800/80">
+            <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-2">
               <button
                 onClick={handleGoBack}
-                className="text-xs text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1 mx-auto"
+                className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1"
               >
-                <ArrowLeft className="w-3.5 h-3.5" /> Return to Website
+                <ArrowLeft className="w-3.5 h-3.5" /> Website
+              </button>
+
+              <button
+                onClick={() => setIsResetPasswordOpen(true)}
+                className="text-xs text-brand-400 hover:text-brand-300 font-semibold transition-colors flex items-center gap-1"
+              >
+                <KeyRound className="w-3.5 h-3.5" /> Change Password
               </button>
             </div>
           </div>
+
+          {/* CHANGE / RESET PASSWORD MODAL */}
+          {isResetPasswordOpen && (
+            <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl relative">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <h3 className="font-bold text-sm text-white flex items-center gap-1.5">
+                    <KeyRound className="w-4 h-4 text-brand-400" /> Change Admin Password
+                  </h3>
+                  <button
+                    onClick={() => setIsResetPasswordOpen(false)}
+                    className="text-slate-400 hover:text-white text-xs"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <form onSubmit={handleChangePassword} className="space-y-3">
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-400 block mb-1">New Password (Min 6 chars)</label>
+                    <input
+                      type="password"
+                      value={newAdminPassword}
+                      onChange={(e) => setNewAdminPassword(e.target.value)}
+                      placeholder="Enter new password"
+                      className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[16px] text-white outline-none focus:border-brand-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-semibold text-slate-400 block mb-1">Confirm New Password</label>
+                    <input
+                      type="password"
+                      value={confirmAdminPassword}
+                      onChange={(e) => setConfirmAdminPassword(e.target.value)}
+                      placeholder="Confirm new password"
+                      className="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-[16px] text-white outline-none focus:border-brand-500"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-2">
+                    <button
+                      type="submit"
+                      className="flex-1 bg-brand-500 hover:bg-brand-600 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md"
+                    >
+                      Update Password
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsResetPasswordOpen(false)}
+                      className="bg-slate-800 text-slate-300 font-semibold px-3 py-2.5 rounded-xl text-xs"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         /* Authenticated Modern Dashboard */
