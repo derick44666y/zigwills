@@ -64,7 +64,9 @@ export default function Gallery() {
         : '';
       try {
         setLoading(true);
-        const res = await fetch(`${baseUrl}/api/gallery`);
+        const res = await fetch(`${baseUrl}/api/gallery?t=${Date.now()}`, {
+          cache: 'no-store',
+        });
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
@@ -77,7 +79,10 @@ export default function Gallery() {
         setLoading(false);
       }
     };
+
     fetchGallery();
+    window.addEventListener('focus', fetchGallery);
+    return () => window.removeEventListener('focus', fetchGallery);
   }, []);
 
   const filteredItems = activeCategory === 'all'

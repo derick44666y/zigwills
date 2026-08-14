@@ -56,7 +56,9 @@ export default function Products() {
         : '';
 
       try {
-        const res = await fetch(`${baseUrl}/api/products`);
+        const res = await fetch(`${baseUrl}/api/products?t=${Date.now()}`, {
+          cache: 'no-store',
+        });
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
@@ -65,7 +67,7 @@ export default function Products() {
                 ...item,
                 features: item.features || [
                   '100% Purified Water',
-                  'NALFDAC Approved',
+                  'NAFDAC Approved',
                   'Hygiene Guaranteed',
                   'Fast Delivery in Owerri',
                 ],
@@ -79,6 +81,8 @@ export default function Products() {
     };
 
     fetchProducts();
+    window.addEventListener('focus', fetchProducts);
+    return () => window.removeEventListener('focus', fetchProducts);
   }, []);
 
   return (
