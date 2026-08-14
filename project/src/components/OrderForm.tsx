@@ -50,15 +50,14 @@ export default function OrderForm() {
     }
 
     const apiUrl = import.meta.env.VITE_API_URL as string | undefined;
-
-    if (!apiUrl) {
-      setStatus('error');
-      setErrorMsg('Online ordering is being set up. Please call us to place your order.');
-      return;
-    }
+    const baseUrl = apiUrl
+      ? apiUrl.replace(/\/$/, '')
+      : window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3001'
+      : '';
 
     try {
-      const response = await fetch(`${apiUrl.replace(/\/$/, '')}/orders`, {
+      const response = await fetch(`${baseUrl}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

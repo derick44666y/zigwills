@@ -428,6 +428,10 @@ app.post('/api/products', requireAdminAuth, async (req: Request, res: Response) 
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Zigwills API running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Zigwills API running on port ${PORT}`);
+  });
+}
+
+export default app;

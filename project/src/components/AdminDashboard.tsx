@@ -236,7 +236,10 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
 
   const getApiUrl = () => {
     const url = import.meta.env.VITE_API_URL as string | undefined;
-    return url ? url.replace(/\/$/, '') : 'http://localhost:3001';
+    if (url) return url.replace(/\/$/, '');
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3001'
+      : '';
   };
 
   // Security & Lockout states

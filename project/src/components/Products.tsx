@@ -49,10 +49,14 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       const apiUrl = import.meta.env.VITE_API_URL as string | undefined;
-      if (!apiUrl) return;
+      const baseUrl = apiUrl
+        ? apiUrl.replace(/\/$/, '')
+        : window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3001'
+        : '';
 
       try {
-        const res = await fetch(`${apiUrl.replace(/\/$/, '')}/api/products`);
+        const res = await fetch(`${baseUrl}/api/products`);
         if (res.ok) {
           const data = await res.json();
           if (Array.isArray(data) && data.length > 0) {
