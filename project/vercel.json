@@ -9,11 +9,15 @@
       "destination": "/api/index.ts"
     },
     {
+      "source": "/googled5d9608a15a99b85.html",
+      "destination": "/googled5d9608a15a99b85.html"
+    },
+    {
       "source": "/admin(.*)",
       "destination": "/index.html"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|googled).*)",
       "destination": "/index.html"
     }
   ]
