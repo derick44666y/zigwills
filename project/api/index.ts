@@ -103,7 +103,7 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // ─── ORDERS ───────────────────────────────────────────────────────────────────
-app.post('/orders', async (req, res) => {
+app.post(['/orders', '/api/orders'], async (req, res) => {
   const { customer_name, phone, address, product, quantity, note } = req.body;
   if (!customer_name || !phone || !address || !product) {
     return res.status(400).json({ error: 'Missing required fields' });

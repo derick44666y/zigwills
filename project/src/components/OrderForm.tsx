@@ -57,7 +57,7 @@ export default function OrderForm() {
       : '';
 
     try {
-      const response = await fetch(`${baseUrl}/orders`, {
+      const response = await fetch(`${baseUrl}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
