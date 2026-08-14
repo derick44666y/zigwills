@@ -604,17 +604,49 @@ export default function AdminDashboard({ onBackToSite }: AdminDashboardProps) {
     setGallery((prev) => prev.filter((g) => g.id !== id));
   };
 
-  const handleMobileFileUpload = (e: React.ChangeEvent<HTMLInputElement>, isEditMode = false) => {
+  const handleMobileFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEditMode = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setIsUploadingImage(true);
 
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string | undefined;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string | undefined;
+
+    // Direct Cloudinary Upload (if cloud name and preset are configured)
+    if (cloudName && uploadPreset) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', uploadPreset);
+
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const imageUrl = data.secure_url || data.url;
+          if (isEditMode && editingGalleryItem) {
+            setEditingGalleryItem((prev) => (prev ? { ...prev, image_url: imageUrl } : null));
+          } else {
+            setNewGalleryUrl(imageUrl);
+          }
+          setIsUploadingImage(false);
+          return;
+        }
+      } catch (err) {
+        console.error('Cloudinary upload error:', err);
+      }
+    }
+
+    // Fallback: Read image locally as Data URL
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64Url = reader.result as string;
       if (isEditMode && editingGalleryItem) {
-        setEditingGalleryItem((prev) => prev ? { ...prev, image_url: base64Url } : null);
+        setEditingGalleryItem((prev) => (prev ? { ...prev, image_url: base64Url } : null));
       } else {
         setNewGalleryUrl(base64Url);
       }
