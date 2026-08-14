@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import pool from './db.js';
-import { sendOrderNotificationEmail } from './email.js';
+import pool from './db';
+import { sendOrderNotificationEmail } from './email';
 
 dotenv.config();
 
