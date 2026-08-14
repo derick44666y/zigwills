@@ -1,16 +1,6 @@
 {
   "rewrites": [
-    {
-      "source": "/googled5d9608a15a99b85.html",
-      "destination": "/googled5d9608a15a99b85.html"
-    },
-    {
-      "source": "/admin(.*)",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/admin/(.*)", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" }
   ]
 }
