@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ShieldCheck } from 'lucide-react';
+
+interface NavbarProps {
+  onOpenAdmin: () => void;
+}
 
 const links = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
   { label: 'Products', href: '#products' },
+  { label: 'Gallery', href: '#gallery' },
   { label: 'Order', href: '#order' },
   { label: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onOpenAdmin }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,7 +26,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         scrolled ? 'bg-white shadow-lg shadow-blue-100/60' : 'bg-transparent'
       }`}
     >
@@ -36,7 +41,7 @@ export default function Navbar() {
           />
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-7">
           {links.map((l) => (
             <a
               key={l.href}
@@ -58,17 +63,19 @@ export default function Navbar() {
           </a>
         </nav>
 
-        <button
-          className="md:hidden p-2"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? (
-            <X className={`w-6 h-6 ${scrolled ? 'text-brand-800' : 'text-white'}`} />
-          ) : (
-            <Menu className={`w-6 h-6 ${scrolled ? 'text-brand-800' : 'text-white'}`} />
-          )}
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            className="p-2"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? (
+              <X className={`w-6 h-6 ${scrolled ? 'text-brand-800' : 'text-white'}`} />
+            ) : (
+              <Menu className={`w-6 h-6 ${scrolled ? 'text-brand-800' : 'text-white'}`} />
+            )}
+          </button>
+        </div>
       </div>
 
       {open && (
